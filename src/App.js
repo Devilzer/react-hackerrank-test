@@ -1,23 +1,40 @@
+import React,{useState, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Articles from "./Articles";
 
-function App() {
+function App({articles}) {
+  const [sortarr,setSortarr]=useState([]);
+  var array = [...articles];
+  useEffect(()=>{
+    sortByUpvotes();
+    console.log(sortarr);
+  },[]);
+
+  const sortByDate=()=>{
+    array.sort((a,b)=>{
+      var dateA = new Date(a.date);
+      var dateB = new Date(b.date);
+      return dateB-dateA;
+    });
+    setSortarr(array);
+  };
+  const sortByUpvotes=()=>{
+    array.sort((a,b)=>{
+      var upvA = new Date(a.upvotes);
+      var upvB = new Date(b.upvotes);
+      return upvB-upvA;
+    });
+    setSortarr(array);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <button onClick={sortByUpvotes}>Upvotes</button>
+        <button onClick={sortByDate}>Dates</button>
+      </div>
+      <Articles articles={sortarr}/>
     </div>
   );
 }
